@@ -1,0 +1,203 @@
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+void main(void)
+{
+	cout << "                                                   Bowling Game Score                     " << endl;
+	cout << "                                                ------------------------                  " << endl;
+	cout << " "<<endl;
+
+	cout << "        Please enter in a NUMBER for the amount of pins knocked down. For a Strike enter in 10 and for a Spare enter in the remaining pins in Throw 2"<< endl;
+	cout << " " << endl;
+	cout << "" << endl;
+	
+	// creates frame for the bowling game 
+	int frame[10][3] = { { 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0,0 } };
+
+	// creates an int array that holds the results from each frame
+	int frameResult[10];
+
+	//creatina a total for the frames
+	int frameTotal[10];
+
+	//initializes currentFrame to 0
+	int currentFrame = 0;
+
+	//initializes finalScore to 0
+	int finalScore = 0;
+
+	
+
+	do
+	{
+
+
+		// starts asking the user to enter in throws for each frames
+
+		cout << "Throw 1 for frame number " << currentFrame + 1 << endl;
+		cin >> frame[currentFrame][0];
+    // checks to see if the number is less than 0 or greater than 10 to input a new number
+		if (frame[currentFrame][0] < 0 || frame[currentFrame][0] > 10)
+		{
+			cout << "invalid entry: ";
+			cin >> frame[currentFrame][0];
+		}
+		cout << endl;
+
+		// if the frame is equal to 10, its a strike move to next frame
+		if (frame[currentFrame][0] == 10)
+		{
+			cout << "STRIKE ' X ' " << endl;
+			frameResult[currentFrame] = 2;
+			currentFrame++;
+		}
+		// if not then go to throw 2
+		else
+		{
+			cout << "Throw 2 for frame number " << currentFrame + 1 << endl;
+			cin >> frame[currentFrame][1];
+
+			if (frame[currentFrame][1] < 0 || frame[currentFrame][1] > 10)
+			{
+				cout << "invalid entry: ";
+				cin >> frame[currentFrame][1];
+			}
+			cout << endl;
+			// if throw 1 and throw 2 = 10 then its a spare
+			if (frame[currentFrame][0] + frame[currentFrame][1] == 10)
+			{
+				cout << "SPARE! ' / '" << endl;
+				frameResult[currentFrame] = 1;
+				currentFrame++;
+			}
+			// else hold the result in its place
+			else
+			{
+
+				frameResult[currentFrame] = 0;
+				currentFrame++;
+			}
+		}
+	} while (currentFrame < 9);
+	{
+
+		cout << " Throw 1 for frame number " << currentFrame + 1 << endl;
+		cin >> frame[currentFrame][0];
+		cout << endl;
+
+		// if the first throw in frame 10 = 10
+		if (frame[currentFrame][0] == 10)
+		{
+			cout << "STRIKE ' X ' " << endl;
+			frameResult[currentFrame] = 2;
+			cout << "Throw 2 for frame number " << currentFrame + 1 << endl;
+			cin >> frame[currentFrame][1];
+			cout << endl;
+			cout << "Throw 3 for frame number " << currentFrame + 1 << endl;
+			cin >> frame[currentFrame][2];
+			cout << endl;
+			currentFrame++;
+		}
+		else
+		{
+			cout << "Throw 2 for frame number " << currentFrame + 1 << endl;
+			cin >> frame[currentFrame][1];
+			cout << endl;
+
+			if (frame[currentFrame][0] + frame[currentFrame][1] == 10)
+			{
+				cout << "SPARE! '/ ' " << endl;
+				frameResult[currentFrame] = 1;
+				cout << "Throw 3 for frame number " << currentFrame + 1 << endl;
+				cin >> frame[currentFrame][2];
+				cout << endl;
+				currentFrame++;
+			}
+			else
+			{
+
+				frameResult[currentFrame] = 0;
+				currentFrame++;
+			}
+		}
+	} while (currentFrame < 10);
+	// adds the results from the frames of 1-8
+	for (currentFrame = 0; currentFrame < 8; currentFrame++)
+	{
+		switch (frameResult[currentFrame])
+		{
+		case 0:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1];
+			break;
+		case 1:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1] +
+				frame[currentFrame + 1][0];
+			break;
+		case 2:
+			if (frameResult[currentFrame + 1] == 2)
+			{
+				frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame + 1][0] +
+					frame[currentFrame + 2][0];
+			}
+			else
+			{
+				frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame + 1][0] +
+					frame[currentFrame + 1][1];
+			}
+			break;
+		}
+	}
+	//calculate the 9th frame going to the 10th
+	for (currentFrame = 8; currentFrame < 9; currentFrame++)
+	{
+		switch (frameResult[currentFrame])
+		{
+		case 0:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1];
+			break;
+		case 1:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1] +
+				frame[currentFrame + 1][0];
+			break;
+		case 2:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame + 1][0] +
+				frame[currentFrame + 1][1];
+			break;
+		}
+	}
+	// to calculate the 10th frame and that last throw 
+	for (currentFrame = 9; currentFrame < 10; currentFrame++)
+	{
+		switch (frameResult[currentFrame])
+		{
+		case 0:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1];
+			break;
+		case 1:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1] +
+				frame[currentFrame][2];
+			break;
+		case 2:
+			frameTotal[currentFrame] = frame[currentFrame][0] + frame[currentFrame][1] +
+				frame[currentFrame][2];
+			break;
+		}
+	}
+	// calculates the final score of the game 
+	for (currentFrame = 0; currentFrame < 10; currentFrame++)
+	{
+		finalScore = finalScore + frameTotal[currentFrame];
+
+	}
+	cout << "Total score = " << finalScore << endl;
+	if (finalScore == 300){
+
+		cout << "PERFECT GAME!!! " << endl;
+		}
+	system("PAUSE");
+}
+
